@@ -852,7 +852,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 82001467}
-  - component: {fileID: 82001466}
+  - component: {fileID: 82001468}
   m_Layer: 0
   m_Name: respawnRange
   m_TagString: Untagged
@@ -860,7 +860,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!65 &82001466
+--- !u!4 &82001467
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 82001465}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.9096701, y: 0.6, z: -4.13}
+  m_LocalScale: {x: 8, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &82001468
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -879,23 +894,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 15, y: 1, z: 3}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!4 &82001467
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 82001465}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.9096701, y: 0.6, z: -4.13}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &84380173
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2241,6 +2241,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 331031347}
+  - component: {fileID: 331031348}
   m_Layer: 0
   m_Name: Demo_Objects
   m_TagString: Untagged
@@ -2391,6 +2392,18 @@ Transform:
   - {fileID: 1797664807}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &331031348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331031346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 143bcd2e28b2d496ab6bc85cec2fb6ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &363291728
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9938,12 +9951,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cd3613cfb2784a9e8119a6c8385b58a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rangeObject: {fileID: 82001465}
-  capsul: {fileID: 6173172085731050060, guid: fa12db7f8a3f0714799c08ee4da865d6, type: 3}
-  spawnInterval: 1
-  maxCount: 1
-  spawnedPositions:
-  - {x: 0, y: 0, z: 0}
+  score: 0
+  respawnRange: {fileID: 82001465}
+  green: {fileID: 6173172085731050060, guid: fa12db7f8a3f0714799c08ee4da865d6, type: 3}
+  spawnTime: 3
+  maxCount: 2
   minimumDistance: 2.5
 --- !u!4 &2136500888
 Transform:
