@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SlimeMove : MonoBehaviour
 {
+    private HealthBarHUDTester healthBarHUDTester; // 인스턴스 변수로 변경
     public Animator slimeAnimator;
     public float speed = 1.0f;
     public float attackInterval = 3.0f;
@@ -20,6 +21,7 @@ public class SlimeMove : MonoBehaviour
 
     void Start()
     {
+        healthBarHUDTester = FindObjectOfType<HealthBarHUDTester>();
         SetNewTargetZ();
         CreateTargetSprite();
     }
@@ -85,6 +87,7 @@ public class SlimeMove : MonoBehaviour
         transform.LookAt(Camera.main.transform.position);
         yield return new WaitForSeconds(attackInterval); // 공격 간격만큼 대기
         slimeAnimator.SetTrigger("Attack");
+        healthBarHUDTester.Hurt(1); // 인스턴스를 통해 메서드 호출
         isAttacking = false;
     }
 
