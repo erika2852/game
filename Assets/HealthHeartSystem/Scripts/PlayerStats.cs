@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;  // Import the SceneManager class
 
 public class PlayerStats : MonoBehaviour
 {
+    public GameObject obj;
+
     public delegate void OnHealthChangedDelegate();
     public OnHealthChangedDelegate onHealthChangedCallback;
 
@@ -49,6 +51,8 @@ public class PlayerStats : MonoBehaviour
         if (health <= 0)
         {
             // Replace "YourSceneName" with the name of your desired scene
+            obj= GameObject.Find("StartProgram");
+            obj.GetComponent<StartProgram>().CreateCharacter();
             SceneManager.LoadScene("gameover");
         }
     }
