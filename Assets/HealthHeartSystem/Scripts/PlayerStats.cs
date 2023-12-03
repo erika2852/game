@@ -3,13 +3,14 @@
  */
 
 using UnityEngine;
+using UnityEngine.SceneManagement;  // Import the SceneManager class
 
 public class PlayerStats : MonoBehaviour
 {
     public delegate void OnHealthChangedDelegate();
     public OnHealthChangedDelegate onHealthChangedCallback;
 
-    #region Sigleton
+    #region Singleton
     private static PlayerStats instance;
     public static PlayerStats Instance
     {
@@ -43,6 +44,13 @@ public class PlayerStats : MonoBehaviour
     {
         health -= dmg;
         ClampHealth();
+
+        // Check if health is zero or below, and transition to a specified scene
+        if (health <= 0)
+        {
+            // Replace "YourSceneName" with the name of your desired scene
+            SceneManager.LoadScene("gameover");
+        }
     }
 
     public void AddHealth()
@@ -54,7 +62,7 @@ public class PlayerStats : MonoBehaviour
 
             if (onHealthChangedCallback != null)
                 onHealthChangedCallback.Invoke();
-        }   
+        }
     }
 
     void ClampHealth()
