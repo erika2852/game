@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/SimpleNaturePack/Scenes/How to.unity
     guid: 04a18d2e14acfde4d8089f0123ae05a5
-  - enabled: 1
+  - enabled: 0
     path: Assets/SimpleNaturePack/Scenes/SimpleNaturePack_Overview.unity
     guid: b818941d93326b949a3840a1d79ea88f
   - enabled: 1
@@ -35,4 +35,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/SimpleNaturePack/Scenes/Title.unity
     guid: 9a5572ca8f6c22b42b8c841f406a0be6
+  - enabled: 1
+    path: Assets/SimpleNaturePack/Scenes/rank.unity
+    guid: b16aa909182f1418ab465fcb7c3188e6
   m_configObjects: {}
