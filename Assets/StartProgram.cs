@@ -4,6 +4,8 @@ using Amazon;
 using Amazon.CognitoIdentity;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.Model;
+using System.Collections.Generic; 
 
 public class StartProgram : MonoBehaviour
 {
@@ -44,19 +46,54 @@ public class StartProgram : MonoBehaviour
         });
     }
 
-    public void FindItem() //DB에서 캐릭터 정보 받기
+    public void FindTopItemsAndStore()
+{
+    ScanRequest scanRequest = new ScanRequest
     {
-        Character c;
-        context.LoadAsync<Character>("abcd", (AmazonDynamoDBResult<Character> result) =>
+        TableName = "character_info",
+        Limit = 10,
+    };
+
+    DBclient.ScanAsync(scanRequest, (result) =>
+    {
+        if (result.Exception != null)
         {
-            // id가 abcd인 캐릭터 정보를 DB에서 받아옴
-            if (result.Exception != null)
+            Debug.LogException(result.Exception);
+            return;
+        }
+
+        List<Dictionary<string, AttributeValue>> items = result.Response.Items;
+
+        // 디버깅을 위해 변수에 저장
+        List<Character> characterList = new List<Character>();
+
+        foreach (var item in items)
+        {
+            string id = item["id"].S;
+            int score = int.Parse(item["score"].N);
+
+            // 각 아이템을 Character 객체로 변환하여 리스트에 추가
+            Character character = new Character
             {
-                Debug.LogException(result.Exception);
-                return;
-            }
-            c = result.Result;
-            Debug.Log(c.score); //찾은 캐릭터 정보 중 아이템 정보 출력
-        }, null);
+                id = id,
+                score = score
+            };
+            characterList.Add(character);
+
+            Debug.Log($"ID: {id}, Score: {score}");
+        }
+        Debug.Log("Items stored in characterList.");
+        HandleStoredItems(characterList);
+    });
+}
+
+// 디버깅이나 추가 처리를 위한 예제 메서드
+private void HandleStoredItems(List<Character> characterList)
+{
+    foreach (var character in characterList)
+    {
+        Debug.Log($"Handling stored item - ID: {character.id}, Score: {character.score}");
     }
+}
+
 }
