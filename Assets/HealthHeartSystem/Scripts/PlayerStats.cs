@@ -8,10 +8,12 @@ using UnityEngine.SceneManagement;  // Import the SceneManager class
 public class PlayerStats : MonoBehaviour
 {
     public GameObject obj;
+public GameObject obj2;
 
+public GameObject obj3;
     public delegate void OnHealthChangedDelegate();
     public OnHealthChangedDelegate onHealthChangedCallback;
-
+    public string playerName2;
     #region Singleton
     private static PlayerStats instance;
     public static PlayerStats Instance
@@ -50,9 +52,10 @@ public class PlayerStats : MonoBehaviour
         // Check if health is zero or below, and transition to a specified scene
         if (health <= 0)
         {
-            // Replace "YourSceneName" with the name of your desired scene
+            obj2= GameObject.Find("Phoenix");
             obj= GameObject.Find("StartProgram");
-            obj.GetComponent<StartProgram>().CreateCharacter();
+            obj3= GameObject.Find("GameManager");
+            obj.GetComponent<StartProgram>().CreateCharacter(obj2.GetComponent<Phoenix>().playerName2,obj3.GetComponent<RandomSpawn>().score);
             SceneManager.LoadScene("gameover");
         }
     }

@@ -16,8 +16,6 @@ public class StartProgram : MonoBehaviour
         credentials = new CognitoAWSCredentials("ap-northeast-2:b3f1d2ce-0fd8-421e-b730-4d5eaa16ea05", RegionEndpoint.APNortheast2);
         DBclient = new AmazonDynamoDBClient(credentials, RegionEndpoint.APNortheast2);
         context = new DynamoDBContext(DBclient);
-        CreateCharacter();
-        FindItem();
     }
 
     [DynamoDBTable("character_info")]
@@ -26,15 +24,15 @@ public class StartProgram : MonoBehaviour
         [DynamoDBHashKey] // Hash key.
         public string id { get; set; }
         [DynamoDBProperty]
-        public int item { get; set; }
+        public int score { get; set; }
     }
 
-    public void CreateCharacter() //캐릭터 정보를 DB에 올리기
+    public void CreateCharacter(string id2, int score) //캐릭터 정보를 DB에 올리기
     {
         Character c1 = new Character
         {
-            id = "happy",
-            item = 1111,
+            id = id2,
+            score = score,
         };
         context.SaveAsync(c1, (result) =>
         {
@@ -58,7 +56,7 @@ public class StartProgram : MonoBehaviour
                 return;
             }
             c = result.Result;
-            Debug.Log(c.item); //찾은 캐릭터 정보 중 아이템 정보 출력
+            Debug.Log(c.score); //찾은 캐릭터 정보 중 아이템 정보 출력
         }, null);
     }
 }

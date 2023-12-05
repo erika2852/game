@@ -29,4 +29,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/SimpleNaturePack/Scenes/gameover.unity
     guid: 6b4a2022ccc1d5049861262ef1bf52f4
+  - enabled: 1
+    path: Assets/Morm/DemoScene/Demo.unity
+    guid: 0ba16ce8f07b0084d98b4feb9efcd823
+  - enabled: 1
+    path: Assets/SimpleNaturePack/Scenes/Title.unity
+    guid: 9a5572ca8f6c22b42b8c841f406a0be6
   m_configObjects: {}
