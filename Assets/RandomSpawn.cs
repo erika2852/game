@@ -18,12 +18,11 @@ public class RandomSpawn : MonoBehaviour
     {
         rangeCollider = respawnRange.GetComponent<BoxCollider>();
         StartCoroutine(RandomRespawn_Coroutine());
+        StartCoroutine(DecreaseSpawnTime());
     }
 
     IEnumerator RandomRespawn_Coroutine()
     {
-        float timeInterval = spawnTime / maxCount;
-
         while (true)
         {
             for (int i = 0; i < maxCount; i++)
@@ -33,10 +32,24 @@ public class RandomSpawn : MonoBehaviour
                 GameObject instantSlime = Instantiate(green, newPosition, Quaternion.identity);
                 spawnedPositions.Add(newPosition);
 
-                yield return new WaitForSeconds(timeInterval);
+                yield return new WaitForSeconds(spawnTime / maxCount);
             }
 
-            yield return new WaitForSeconds(timeInterval); // 다음 스폰 사이클 전에 대기
+            yield return new WaitForSeconds(spawnTime / maxCount); // 다음 스폰 사이클 전에 대기
+        }
+    }
+
+    IEnumerator DecreaseSpawnTime()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5f); // Decrease every 5 seconds
+            spawnTime -= 0.1f;
+
+            if (spawnTime <= 0.1f)
+            {
+                spawnTime = 0.1f; // Limit minimum spawnTime to 0.1
+            }
         }
     }
 
@@ -88,6 +101,4 @@ public class RandomSpawn : MonoBehaviour
         score += 10;
         Debug.Log("Score: " + score);
     }
-
-
 }

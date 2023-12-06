@@ -4,14 +4,14 @@ using UnityEngine;
 public class SlimeMove : MonoBehaviour
 {
     public CameraShake cameraShake;
-    private HealthBarHUDTester healthBarHUDTester; // 인스턴스 변수로 변경
+    private HealthBarHUDTester healthBarHUDTester;
     public Animator slimeAnimator;
-    public float speed = 1.0f;
+    private Speed speedScript;  // Reference to the Speed script
     public float attackInterval = 3.0f;
     public float waitAfterArrival = 1.0f;
 
-    public Sprite targetSprite;     // 추가: 목표에 도달한 후 대기시간을 기다릴 때 표시할 스프라이트
-    public Sprite newTargetSprite;  // 추가: 새로운 목표로 이동할 때 표시할 스프라이트
+    public Sprite targetSprite;
+    public Sprite newTargetSprite;
 
     private float targetZ;
     private bool isMoving = true;
@@ -22,8 +22,9 @@ public class SlimeMove : MonoBehaviour
 
     void Start()
     {
-           cameraShake = GameObject.Find("Cameras").GetComponent<CameraShake>();
+        cameraShake = GameObject.Find("Cameras").GetComponent<CameraShake>();
         healthBarHUDTester = FindObjectOfType<HealthBarHUDTester>();
+        speedScript = GameObject.Find("GameObject").GetComponent<Speed>();  // Replace "YourGameObjectName" with the actual name
         SetNewTargetZ();
         CreateTargetSprite();
     }
@@ -46,7 +47,6 @@ public class SlimeMove : MonoBehaviour
         }
         else
         {
-            // 추가: 목표에 도달하고 공격 중이 아닌 경우에만 MoveTowardsTarget 호출
             if (!isAttacking)
             {
                 MoveTowardsTarget();
@@ -55,61 +55,53 @@ public class SlimeMove : MonoBehaviour
     }
 
     void MoveTowardsTarget()
-{
-    if (!isAttacking) // Check if not attacking
     {
-        isMoving = true;
-        Vector3 direction = new Vector3(0, 0, targetZ) - new Vector3(0, 0, transform.position.z);
-        direction.Normalize();
-        transform.Translate(direction * speed * Time.deltaTime, Space.World);
-
-        // 목표 지점에 거의 도달했을 때 정확한 위치로 이동
-        if (Mathf.Abs(transform.position.z - targetZ) < 0.1f)
+        if (!isAttacking)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, targetZ);
-            StartCoroutine(WaitAfterArrival()); // 도착 후 대기 시작
-        }
+            isMoving = true;
+            Vector3 direction = new Vector3(0, 0, targetZ) - new Vector3(0, 0, transform.position.z);
+            direction.Normalize();
+            transform.Translate(direction * speedScript.GetSpeed() * Time.deltaTime, Space.World);
 
-        // Play "walk" animation only when not attacking and not arrived
-        if (!isAttacking && Mathf.Abs(transform.position.z - targetZ) > 0.1f)
-        {
-            slimeAnimator.SetTrigger("Walk");
+            if (Mathf.Abs(transform.position.z - targetZ) < 0.1f)
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y, targetZ);
+                StartCoroutine(WaitAfterArrival());
+            }
 
+            if (!isAttacking && Mathf.Abs(transform.position.z - targetZ) > 0.1f)
+            {
+                slimeAnimator.SetTrigger("Walk");
+            }
         }
     }
-}
-
 
     IEnumerator AttackRoutine()
     {
         isMoving = false;
         isAttacking = true;
-        spriteShown = false; // 공격 시작 시 스프라이트 상태 초기화
+        spriteShown = false;
 
         transform.LookAt(Camera.main.transform.position);
-        yield return new WaitForSeconds(attackInterval); // 공격 간격만큼 대기
+        yield return new WaitForSeconds(attackInterval);
         slimeAnimator.SetTrigger("Attack");
         cameraShake.ShakeCamera();
-        healthBarHUDTester.Hurt(1); // 인스턴스를 통해 메서드 호출
+        healthBarHUDTester.Hurt(1);
         isAttacking = false;
     }
 
-IEnumerator WaitAfterArrival()
-{
-    // 공격 1초 전에 스프라이트를 변경
-    yield return new WaitForSeconds(waitAfterArrival - 1.0f);
-    ChangeSpriteToNew();
-
-    // 대기 시간이 끝난 후 실행할 코드 추가 가능
-    yield return new WaitForSeconds(1.0f);
-
-    // Walk 애니메이션을 중복으로 발동하지 않도록 체크
-    if (!isAttacking)
+    IEnumerator WaitAfterArrival()
     {
-        slimeAnimator.SetTrigger("Walk");
-    }
-}
+        yield return new WaitForSeconds(waitAfterArrival - 1.0f);
+        ChangeSpriteToNew();
 
+        yield return new WaitForSeconds(1.0f);
+
+        if (!isAttacking)
+        {
+            slimeAnimator.SetTrigger("Walk");
+        }
+    }
 
     void CreateTargetSprite()
     {

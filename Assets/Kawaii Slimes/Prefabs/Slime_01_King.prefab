@@ -70,8 +70,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fee3f6fab99d4106a200bdeb5a4df25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraShake: {fileID: 0}
   slimeAnimator: {fileID: -2019775951994752795}
-  speed: 5
+  speed: 2
   attackInterval: 2
   waitAfterArrival: 1
   targetSprite: {fileID: 21300000, guid: 27f4265baec5c45a69403668570bb681, type: 3}

@@ -18,12 +18,11 @@ public class RandomSpawn1 : MonoBehaviour
     {
         rangeCollider = respawnRange.GetComponent<BoxCollider>();
         StartCoroutine(RandomRespawn_Coroutine());
+        StartCoroutine(DecreaseSpawnTime());
     }
 
     IEnumerator RandomRespawn_Coroutine()
     {
-        float timeInterval = spawnTime / maxCount;
-
         while (true)
         {
             for (int i = 0; i < maxCount; i++)
@@ -33,10 +32,24 @@ public class RandomSpawn1 : MonoBehaviour
                 GameObject instantSlime = Instantiate(green, newPosition, Quaternion.identity);
                 spawnedPositions.Add(newPosition);
 
-                yield return new WaitForSeconds(timeInterval);
+                yield return new WaitForSeconds(spawnTime / maxCount);
             }
 
-            yield return new WaitForSeconds(timeInterval); // 다음 스폰 사이클 전에 대기
+            yield return new WaitForSeconds(spawnTime / maxCount); // 다음 스폰 사이클 전에 대기
+        }
+    }
+
+    IEnumerator DecreaseSpawnTime()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5f); // Decrease every 5 seconds
+            spawnTime -= 0.1f;
+
+            if (spawnTime <= 0.1f)
+            {
+                spawnTime = 0.1f; // Limit minimum spawnTime to 0.1
+            }
         }
     }
 
@@ -85,9 +98,7 @@ public class RandomSpawn1 : MonoBehaviour
         // 슬라임이 파괴될 때 호출되는 함수
         // 다른 오브젝트에 있는 Destroy 함수에 의해 호출될 예정
         // 여기에서 스코어를 증가시킬 수 있습니다.
-        score += 10;
+        score += 20;
         Debug.Log("Score: " + score);
     }
-
-
 }
