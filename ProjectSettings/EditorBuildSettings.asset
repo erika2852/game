@@ -39,4 +39,5 @@ EditorBuildSettings:
     path: Assets/SimpleNaturePack/Scenes/rank.unity
     guid: b16aa909182f1418ab465fcb7c3188e6
   m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: dcec76a748d2843ae8fa434ce49069f3, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 53780c0759c0c4d1d94617606550d31e, type: 2}

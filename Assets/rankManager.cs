@@ -44,47 +44,51 @@ public class rankManager : MonoBehaviour
         FindTopItemsAndStore();
     }
 
-    private void FindTopItemsAndStore()
+   private void FindTopItemsAndStore()
+{
+    ScanRequest scanRequest = new ScanRequest
     {
-        ScanRequest scanRequest = new ScanRequest
+        TableName = "character_info",
+        Limit = 5,
+    };
+
+    DBclient.ScanAsync(scanRequest, (result) =>
+    {
+        if (result.Exception != null)
         {
-            TableName = "character_info",
-            Limit = 5,
-        };
+            Debug.LogException(result.Exception);
+            return;
+        }
 
-        DBclient.ScanAsync(scanRequest, (result) =>
+        List<Dictionary<string, AttributeValue>> items = result.Response.Items;
+
+        // Sort items based on the "score" attribute in descending order
+        items.Sort((a, b) => int.Parse(b["score"].N).CompareTo(int.Parse(a["score"].N)));
+
+        characterList.Clear(); // Clear the list
+
+        foreach (var item in items)
         {
-            if (result.Exception != null)
+            string id = item["id"].S;
+            int score = int.Parse(item["score"].N);
+
+            Character character = new Character
             {
-                Debug.LogException(result.Exception);
-                return;
-            }
+                id = id,
+                score = score
+            };
+            characterList.Add(character);
 
-            List<Dictionary<string, AttributeValue>> items = result.Response.Items;
+            Debug.Log($"ID: {id}, Score: {score}");
+        }
 
-            characterList.Clear(); // 리스트 초기화
+        Debug.Log("Top 5 items stored in characterList.");
 
-            foreach (var item in items)
-            {
-                string id = item["id"].S;
-                int score = int.Parse(item["score"].N);
+        // Display the top 5 ranks
+        DisplayRanks();
+    });
+}
 
-                Character character = new Character
-                {
-                    id = id,
-                    score = score
-                };
-                characterList.Add(character);
-
-                Debug.Log($"ID: {id}, Score: {score}");
-            }
-
-            Debug.Log("Items stored in characterList.");
-
-            // 데이터를 표시
-            DisplayRanks();
-        });
-    }
 
     private void DisplayRanks()
     {
